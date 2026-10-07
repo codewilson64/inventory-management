@@ -5,6 +5,7 @@ import Products from "./pages/Products"
 import Categories from "./pages/Categories"
 import Transactions from "./pages/Transactions"
 import CreateProduct from "./pages/CreateProduct"
+import CreateCategory from "./pages/CreateCategory"
 
 function App() {
   return (
@@ -12,9 +13,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/products" element={<Products />} />
-        <Route path="/products/create" element={<CreateProduct />}/>
         <Route path="/categories" element={<Categories />} />
         <Route path="/transactions" element={<Transactions />} />
+
+        <Route path="/products/create" element={<CreateProduct />}/>
+        <Route path="/categories/create" element={<CreateCategory />}/>
       </Routes>
     </BrowserRouter>
   )

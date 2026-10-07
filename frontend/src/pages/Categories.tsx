@@ -6,8 +6,10 @@ import {
 } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import { useGetCategoryWithProductCount } from "../hooks/category/useGetCategoryWithProductCount";
+import { useNavigate } from "react-router-dom";
 
 function Categories() {
+  const navigate = useNavigate()
   const { data: categories = [], isLoading, isError } = useGetCategoryWithProductCount()
 
   if (isLoading) {
@@ -62,7 +64,10 @@ function Categories() {
               />
             </div>
 
-            <button className="flex items-center gap-2 rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-gray-800">
+            <button 
+              onClick={() => navigate("/categories/create")}
+              className="flex items-center gap-2 rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-gray-800"
+            >
               <Plus size={18} />
               Add Category
             </button>
