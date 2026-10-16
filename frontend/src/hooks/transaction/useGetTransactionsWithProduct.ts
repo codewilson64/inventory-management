@@ -3,7 +3,7 @@ import { getTransactionsWithProduct } from "../../services/transactionServices"
 
 export const useGetTransactionsWithProduct = () => {
   return useQuery({
-    queryKey: ["transactions"],
+    queryKey: ["transactions", "with-product"],
     queryFn: getTransactionsWithProduct,
   })
 }

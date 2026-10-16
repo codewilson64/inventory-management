@@ -7,9 +7,9 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import Sidebar from "../components/Sidebar";
-import { useGetProductsWithCategory } from "../hooks/product/useGetProductsWithCategory";
 import { useNavigate } from "react-router-dom";
+import { useGetProductsWithCategory } from "../../hooks/product/useGetProductsWithCategory";
+import Sidebar from "../../components/Sidebar";
 
 function Products() {
   const navigate = useNavigate()
@@ -184,6 +184,7 @@ function Products() {
                     <td className="whitespace-nowrap px-6 py-4">
                         <div className="flex justify-end gap-2">
                         <button
+                            onClick={() => navigate(`/products/update/${product.product_id}`)}
                             className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900"
                             title="Edit"
                         >

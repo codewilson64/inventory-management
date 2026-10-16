@@ -4,4 +4,4 @@ export const categorySchema = z.object({
   name: z.string().min(1, "Category name is required"),
 });
 
-export type TCategoryInput = z.input<typeof categorySchema>;
+export type CategoryInput = z.infer<typeof categorySchema>;

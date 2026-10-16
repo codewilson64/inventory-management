@@ -3,7 +3,7 @@ import { getLowStockProducts } from "../../services/productServices"
 
 export const useGetLowStockProducts = () => {
   return useQuery({
-    queryKey: ["low-stock"],
+    queryKey: ["product", "low-stock-products"],
     queryFn: getLowStockProducts
   })
 }

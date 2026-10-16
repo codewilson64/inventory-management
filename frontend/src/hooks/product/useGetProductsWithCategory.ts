@@ -3,7 +3,7 @@ import { getProductsWithCategory } from "../../services/productServices"
 
 export const useGetProductsWithCategory = () => {
   return useQuery({
-    queryKey: ["products"],
+    queryKey: ["products", "with-category"],
     queryFn: getProductsWithCategory,
   })
 }

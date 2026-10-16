@@ -5,14 +5,14 @@ import {
   ArrowUpFromLine,
   AlertTriangle,
 } from "lucide-react";
-import Sidebar from "../components/Sidebar";
-import { useGetProductsCount } from "../hooks/product/useGetProductsCount";
-import { useGetCategoriesCount } from "../hooks/category/useGetCategoriesCount";
-import { useGetStockInCount } from "../hooks/transaction/useGetStockInCount";
-import { useGetStockOutCount } from "../hooks/transaction/useGetStockOutCount";
-import { useGetRecentTransactions } from "../hooks/transaction/useGetRecentTransactions";
-import { formatTime } from "../helper/formatTime";
-import { useGetLowStockProducts } from "../hooks/product/useGetLowStockProducts";
+import Sidebar from "../../components/Sidebar";
+import { useGetProductsCount } from "../../hooks/product/useGetProductsCount";
+import { useGetCategoriesCount } from "../../hooks/category/useGetCategoriesCount";
+import { useGetStockInCount } from "../../hooks/transaction/useGetStockInCount";
+import { useGetStockOutCount } from "../../hooks/transaction/useGetStockOutCount";
+import { useGetRecentTransactions } from "../../hooks/transaction/useGetRecentTransactions";
+import { formatTime } from "../../helper/formatTime";
+import { useGetLowStockProducts } from "../../hooks/product/useGetLowStockProducts";
 
 function Dashboard() {
   const { data: products_count, isLoading: productsLoading, isError: productsError } = useGetProductsCount()

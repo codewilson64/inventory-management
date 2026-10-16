@@ -7,7 +7,7 @@ export type StockOutCount = {
 
 export const useGetStockOutCount = () => {
   return useQuery<StockOutCount>({
-    queryKey: ["stock-out-count"],
+    queryKey: ["transactions", "stock-out-count"],
     queryFn: getStockOutCount
   })
 }

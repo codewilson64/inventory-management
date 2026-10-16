@@ -1,19 +1,17 @@
 import { ArrowLeft, Tags } from "lucide-react";
-import Sidebar from "../components/Sidebar";
+
 import { useNavigate } from "react-router-dom";
-import { useCreateCategory } from "../hooks/category/useCreateCategory";
-import { categorySchema, type TCategoryInput } from "../schemas/categorySchema";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { categorySchema, type CategoryInput } from "../../schemas/categorySchema";
+import { useCreateCategory } from "../../hooks/category/useCreateCategory";
+import Sidebar from "../../components/Sidebar";
 
 function CreateCategory() {
   const navigate = useNavigate();
 
-  const { 
-    handleSubmit, 
-    register,
-    formState: {errors} 
-  } = useForm<TCategoryInput>({
+  const { handleSubmit, register, formState: {errors} } = useForm<CategoryInput>({
     resolver: zodResolver(categorySchema),
     defaultValues: {
       name: "",
@@ -22,7 +20,7 @@ function CreateCategory() {
 
   const { mutateAsync, isPending } = useCreateCategory()
 
-  const onSubmit = async(data: TCategoryInput) => {
+  const onSubmit = async(data: CategoryInput) => {
     try {
       await mutateAsync(data)
     } 

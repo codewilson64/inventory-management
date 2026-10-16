@@ -4,9 +4,10 @@ import {
   Pencil,
   Trash2,
 } from "lucide-react";
-import Sidebar from "../components/Sidebar";
-import { useGetCategoryWithProductCount } from "../hooks/category/useGetCategoryWithProductCount";
+
 import { useNavigate } from "react-router-dom";
+import { useGetCategoryWithProductCount } from "../../hooks/category/useGetCategoryWithProductCount";
+import Sidebar from "../../components/Sidebar";
 
 function Categories() {
   const navigate = useNavigate()

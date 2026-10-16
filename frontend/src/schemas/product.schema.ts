@@ -7,4 +7,4 @@ export const productSchema = z.object({
   category_id: z.number().min(1, "Category is required"),
 });
 
-export type TProductInput = z.input<typeof productSchema>;
+export type ProductInput = z.infer<typeof productSchema>;

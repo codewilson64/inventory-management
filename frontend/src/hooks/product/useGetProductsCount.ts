@@ -7,7 +7,7 @@ export type ProductsCount = {
 
 export const useGetProductsCount = () => {
   return useQuery<ProductsCount>({
-    queryKey: ["products-count"],
+    queryKey: ["products", "products-count"],
     queryFn: getProductsCount,
   });
 };

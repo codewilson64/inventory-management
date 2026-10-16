@@ -1,11 +1,13 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 
-import Dashboard from "./pages/Dashboard"
-import Products from "./pages/Products"
-import Categories from "./pages/Categories"
-import Transactions from "./pages/Transactions"
-import CreateProduct from "./pages/CreateProduct"
-import CreateCategory from "./pages/CreateCategory"
+import Dashboard from "./pages/dashboard/Dashboard"
+import Products from "./pages/products/Products"
+import Categories from "./pages/categories/Categories"
+import Transactions from "./pages/transactions/Transactions"
+import CreateProduct from "./pages/products/CreateProduct"
+import CreateCategory from "./pages/categories/CreateCategory"
+import CreateTransaction from "./pages/transactions/CreateTransaction"
+import UpdateProduct from "./pages/products/UpdateProduct"
 
 function App() {
   return (
@@ -17,7 +19,10 @@ function App() {
         <Route path="/transactions" element={<Transactions />} />
 
         <Route path="/products/create" element={<CreateProduct />}/>
+        <Route path="/products/update/:id" element={<UpdateProduct />}/>
+
         <Route path="/categories/create" element={<CreateCategory />}/>
+        <Route path="/transactions/create" element={<CreateTransaction />}/>
       </Routes>
     </BrowserRouter>
   )

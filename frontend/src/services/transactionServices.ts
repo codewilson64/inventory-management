@@ -1,7 +1,13 @@
 import type { StockInCount } from "../hooks/transaction/useGetStockInCount";
 import type { StockOutCount } from "../hooks/transaction/useGetStockOutCount";
 import { api } from "../libs/axios";
+import type { TransactionInput } from "../schemas/transaction.schema";
 import type { Transaction } from "../types/transaction";
+
+export const createTransaction = async (data: TransactionInput) => {
+  const response = await api.post("/transactions", data)
+  return response.data
+}
 
 export const getTransactionsWithProduct = async () => {
   const response = await api.get<Transaction[]>("/transactions/with-product");

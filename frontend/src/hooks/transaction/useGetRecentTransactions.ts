@@ -3,7 +3,7 @@ import { getRecentTransactions } from "../../services/transactionServices"
 
 export const useGetRecentTransactions = () => {
   return useQuery({
-    queryKey: ["recent-transactions"],
+    queryKey: ["transactions", "recent-transactions"],
     queryFn: getRecentTransactions
   })
 }

@@ -3,11 +3,13 @@ import {
   ArrowDownToLine,
   ArrowUpFromLine,
 } from "lucide-react";
-import Sidebar from "../components/Sidebar";
-import { useGetTransactionsWithProduct } from "../hooks/transaction/useGetTransactionsWithProduct";
-import { formatTime } from "../helper/formatTime";
+import { useNavigate } from "react-router-dom";
+import { useGetTransactionsWithProduct } from "../../hooks/transaction/useGetTransactionsWithProduct";
+import Sidebar from "../../components/Sidebar";
+import { formatTime } from "../../helper/formatTime";
 
 function Transactions() {
+  const navigate = useNavigate()
   const { data: transactions = [], isLoading, isError } = useGetTransactionsWithProduct()
 
   if (isLoading) {
@@ -62,7 +64,10 @@ function Transactions() {
               />
             </div>
 
-            <button className="flex items-center gap-2 rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-gray-800">
+            <button 
+              onClick={() => navigate("/transactions/create")}
+              className="flex items-center gap-2 rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-gray-800"
+            >
               <ArrowDownToLine size={18} />
               New Transaction
             </button>

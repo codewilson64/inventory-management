@@ -4,4 +4,5 @@ export interface Product {
   price: number;
   stock: number;
   category: string;
+  category_id: number;
 }

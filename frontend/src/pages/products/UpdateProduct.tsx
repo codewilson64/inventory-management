@@ -1,39 +1,45 @@
 import { ArrowLeft, Package } from "lucide-react";
-import Sidebar from "../components/Sidebar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import Sidebar from "../../components/Sidebar";
+import { useGetAllCategories } from "../../hooks/category/useGetAllCategories";
+import { useGetProductById } from "../../hooks/product/useGetProductById";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { productSchema, type TProductInput } from "../schemas/product.schema";
-import { useCreateProduct } from "../hooks/product/useCreateProduct";
-import { useGetAllCategories } from "../hooks/category/useGetAllCategories";
+import { useEffect } from "react";
+import { useUpdateProductById } from "../../hooks/product/useUpdateProductById";
+import type { ProductInput } from "../../schemas/product.schema";
 
-function CreateProduct() {
-  const navigate = useNavigate()
+function UpdateProduct() {
+  const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>()
 
-  const { 
-    handleSubmit, 
-    register,
-    formState: {errors} 
-  } = useForm<TProductInput>({
-    resolver: zodResolver(productSchema),
-    defaultValues: {
-      name: "",
-      price: 0,
-      stock: 0,
-      category_id: 0
-    }
-  });
+  const { handleSubmit, register, reset } = useForm<ProductInput>()
 
+  const { data: product } = useGetProductById(id ?? "")
   const { data: categories = [] } = useGetAllCategories()
 
-  const { mutateAsync, isPending } = useCreateProduct()
+  const { mutateAsync, isPending } = useUpdateProductById()
 
-  const onSubmit = async (data: TProductInput) => {
+  useEffect(() => {
+    if(product) {
+      reset({
+        name: product.name,
+        price: product.price,
+        stock: product.stock,
+        category_id: product.category_id
+      })
+    }
+  }, [reset, product])
+
+  const onSubmit = async (data: ProductInput) => {
     try {
-      await mutateAsync(data)
+      if (!id) return
+      await mutateAsync({ 
+        id,
+        data 
+      })
     } 
     catch (error) {
-      console.log(error)
+      console.log(error)  
     }
   }
 
@@ -46,7 +52,7 @@ function CreateProduct() {
       <main className="flex-1 min-w-0">
         {/* Header */}
         <header className="flex h-16 items-center justify-between border-b bg-white px-6">
-          <h2 className="text-lg font-semibold">Create Product</h2>
+          <h2 className="text-lg font-semibold">Update Product</h2>
 
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-900 text-sm font-medium text-white">
@@ -63,17 +69,20 @@ function CreateProduct() {
         <div className="p-6">
           {/* Page title */}
           <div className="mb-6">
-            <button onClick={() => navigate('/products')} className="mb-4 flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900">
+            <button
+              onClick={() => navigate("/products")}
+              className="mb-4 flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900"
+            >
               <ArrowLeft size={17} />
               Back to Products
             </button>
 
             <h1 className="text-2xl font-bold text-gray-900">
-              Create Product
+              Update Product
             </h1>
 
             <p className="mt-1 text-sm text-gray-500">
-              Add a new product to your inventory.
+              Update the details of your existing product.
             </p>
           </div>
 
@@ -91,7 +100,7 @@ function CreateProduct() {
                 </h2>
 
                 <p className="text-sm text-gray-500">
-                  Enter the details for your new product.
+                  Modify the product information below.
                 </p>
               </div>
             </div>
@@ -99,7 +108,7 @@ function CreateProduct() {
             {/* Form */}
             <div className="p-6">
               <div className="grid gap-5">
-                {/* Product name */}
+                {/* Product Name */}
                 <div>
                   <label
                     htmlFor="name"
@@ -111,16 +120,9 @@ function CreateProduct() {
                   <input
                     id="name"
                     type="text"
-                    placeholder="Enter product name"
                     {...register("name")}
                     className="w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition focus:border-gray-400 focus:ring-1 focus:ring-gray-200"
                   />
-
-                  {errors.name && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {errors.name.message}
-                    </p>
-                  )}
                 </div>
 
                 {/* Category */}
@@ -134,7 +136,7 @@ function CreateProduct() {
 
                   <select
                     id="category"
-                    {...register("category_id", { valueAsNumber: true })}
+                    {...register("category_id")}
                     className="w-full rounded-lg border bg-white px-4 py-2.5 text-sm text-gray-700 outline-none transition focus:border-gray-400 focus:ring-1 focus:ring-gray-200"
                   >
                     {categories.map((category) => (
@@ -146,12 +148,6 @@ function CreateProduct() {
                       </option>
                     ))}
                   </select>
-
-                  {errors.category_id && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {errors.category_id.message}
-                    </p>
-                  )}
                 </div>
 
                 {/* Price + Stock */}
@@ -172,17 +168,9 @@ function CreateProduct() {
 
                       <input
                         id="price"
-                        type="number"
-                        placeholder="0"
                         {...register("price", { valueAsNumber: true })}
                         className="w-full rounded-lg border py-2.5 pl-11 pr-4 text-sm outline-none transition focus:border-gray-400 focus:ring-1 focus:ring-gray-200"
                       />
-
-                      {errors.price && (
-                        <p className="mt-1 text-sm text-red-500">
-                          {errors.price.message}
-                        </p>
-                      )}
                     </div>
                   </div>
 
@@ -192,22 +180,14 @@ function CreateProduct() {
                       htmlFor="stock"
                       className="mb-2 block text-sm font-medium text-gray-700"
                     >
-                      Initial Stock
+                      Stock
                     </label>
 
                     <input
                       id="stock"
-                      type="number"
-                      placeholder="0"
                       {...register("stock", { valueAsNumber: true })}
                       className="w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition focus:border-gray-400 focus:ring-1 focus:ring-gray-200"
                     />
-
-                    {errors.stock && (
-                      <p className="mt-1 text-sm text-red-500">
-                        {errors.stock.message}
-                      </p>
-                    )}
                   </div>
                 </div>
               </div>
@@ -217,6 +197,7 @@ function CreateProduct() {
             <div className="flex items-center justify-end gap-3 border-t bg-gray-50 px-6 py-4">
               <button
                 type="button"
+                onClick={() => navigate("/products")}
                 className="rounded-lg border bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
               >
                 Cancel
@@ -228,7 +209,7 @@ function CreateProduct() {
                 type="submit"
                 className="rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-gray-800"
               >
-                {isPending ? "Creating..." : "Create Product"}
+                {isPending ? "Updating..." : "Update Product"}
               </button>
             </div>
           </div>
@@ -238,4 +219,4 @@ function CreateProduct() {
   );
 }
 
-export default CreateProduct;
+export default UpdateProduct;
