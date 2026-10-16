@@ -6,9 +6,7 @@ export const useUpdateProductById = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async ({ id, data }: {id: string, data: ProductInput}) => {
-      return updateProductById(id, data)
-    },
+    mutationFn: ({ id, data }: {id: string, data: ProductInput}) => updateProductById(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] })
     }

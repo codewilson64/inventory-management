@@ -8,6 +8,7 @@ import CreateProduct from "./pages/products/CreateProduct"
 import CreateCategory from "./pages/categories/CreateCategory"
 import CreateTransaction from "./pages/transactions/CreateTransaction"
 import UpdateProduct from "./pages/products/UpdateProduct"
+import UpdateCategory from "./pages/categories/UpdateCategory"
 
 function App() {
   return (
@@ -22,6 +23,8 @@ function App() {
         <Route path="/products/update/:id" element={<UpdateProduct />}/>
 
         <Route path="/categories/create" element={<CreateCategory />}/>
+        <Route path="/categories/update/:id" element={<UpdateCategory />}/>
+
         <Route path="/transactions/create" element={<CreateTransaction />}/>
       </Routes>
     </BrowserRouter>

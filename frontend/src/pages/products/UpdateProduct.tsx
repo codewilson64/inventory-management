@@ -33,10 +33,7 @@ function UpdateProduct() {
   const onSubmit = async (data: ProductInput) => {
     try {
       if (!id) return
-      await mutateAsync({ 
-        id,
-        data 
-      })
+      await mutateAsync({ id, data })
     } 
     catch (error) {
       console.log(error)  

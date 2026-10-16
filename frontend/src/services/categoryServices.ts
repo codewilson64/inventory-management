@@ -8,6 +8,16 @@ export const getAllCategories = async () => {
   return response.data
 }
 
+export const getCategoryById = async (id: string): Promise<Category> => {
+  const response = await api.get(`/categories/${id}`)
+  return response.data[0]
+}
+
+export const updateCategoryById = async (id: string, data: CategoryInput) => {
+  const response = await api.patch(`/categories/${id}`, data)
+  return response.data
+}
+
 export const getCategoryWithProductCount = async () => {
   const response = await api.get<CategoryWithProductCount[]>("/categories/with-product-count");
   return response.data;

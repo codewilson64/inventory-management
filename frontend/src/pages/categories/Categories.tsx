@@ -31,7 +31,6 @@ function Categories() {
     );
   }
 
-
   return (
     <div className="md:flex min-h-screen bg-gray-50">
       {/* Sidebar */}
@@ -111,7 +110,10 @@ function Categories() {
 
                     <td className="px-6 py-4">
                       <div className="flex justify-end gap-2">
-                        <button className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900">
+                        <button
+                          onClick={() => navigate(`/categories/update/${category.category_id}`)} 
+                          className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                        >
                           <Pencil size={17} />
                         </button>
 
