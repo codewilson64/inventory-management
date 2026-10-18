@@ -10,10 +10,33 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useGetProductsWithCategory } from "../../hooks/product/useGetProductsWithCategory";
 import Sidebar from "../../components/Sidebar";
+import { useDeleteProductById } from "../../hooks/product/useDeleteProductById";
+import { useGetAllCategories } from "../../hooks/category/useGetAllCategories";
+import { useGetProductsByCategoryId } from "../../hooks/product/useGetProductsByCategoryId";
+import { useState } from "react";
+import type { Product } from "../../types/product";
 
 function Products() {
   const navigate = useNavigate()
+
+  const [categoryId, setCategoryId] = useState("");
+
   const { data: products = [], isLoading, isError } = useGetProductsWithCategory()
+  const { data: filteredProducts = [] } = useGetProductsByCategoryId(categoryId)
+  const { data: categories = [] } = useGetAllCategories()
+
+  const displayedProducts: Product[] = categoryId ? filteredProducts : products
+
+  const { mutateAsync, isPending } = useDeleteProductById()
+
+  const handleDelete = async (id: number) => {
+    try {
+      await mutateAsync(String(id))
+    } 
+    catch (error) {
+      console.log(error)  
+    }
+  }
 
   if (isLoading) {
     return (
@@ -94,12 +117,21 @@ function Products() {
               </div>
 
               {/* Category */}
-              <select className="rounded-lg border px-4 py-2.5 text-sm outline-none focus:border-gray-400">
-                <option>All Categories</option>
-                <option>Electronics</option>
-                <option>Computer Accessories</option>
-                <option>Furniture</option>
-                <option>Office Supplies</option>
+              <select
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)} 
+                className="rounded-lg border px-4 py-2.5 text-sm outline-none focus:border-gray-400"
+              >
+                <option value="">All Categories</option>
+                
+                {categories.map((category) => (
+                  <option
+                    key={category.category_id}
+                    value={category.category_id}
+                  >
+                    {category.name}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -131,7 +163,7 @@ function Products() {
                 </thead>
 
                 <tbody>
-                {products.map((product) => (
+                {displayedProducts.map((product) => (
                     <tr
                     key={product.product_id}
                     className="border-b last:border-0 hover:bg-gray-50"
@@ -192,6 +224,7 @@ function Products() {
                         </button>
 
                         <button
+                            onClick={() => handleDelete(product.product_id)}
                             className="rounded-lg p-2 text-gray-500 hover:bg-red-50 hover:text-red-600"
                             title="Delete"
                         >

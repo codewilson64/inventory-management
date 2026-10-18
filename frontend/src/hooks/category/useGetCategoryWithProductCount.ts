@@ -3,7 +3,7 @@ import { getCategoryWithProductCount } from "../../services/categoryServices"
 
 export const useGetCategoryWithProductCount = () => {
     return useQuery({
-      queryKey: ["categories"],
+      queryKey: ["categories", "with-product-count"],
       queryFn: getCategoryWithProductCount
     })
 }

@@ -21,7 +21,17 @@ export const getProductById = async (id: string): Promise<Product> => {
 export const updateProductById = async (id: string, data: ProductInput) => {
   const response = await api.patch(`/products/${id}`, data)
   return response.data
-} 
+}
+
+export const deleteProductById = async (id: string) => {
+  const response = await api.delete(`/products/${id}`)
+  return response.data
+}
+
+export const getProductsByCategoryId = async (id: string) => {
+  const response = await api.get(`/products/categories/${id}`)
+  return response.data
+}
 
 export const getProductsWithCategory = async () => {
   const response = await api.get<Product[]>("/products/with-category");

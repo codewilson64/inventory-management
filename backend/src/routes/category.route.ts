@@ -1,12 +1,11 @@
 import express from "express"
-import { createCategory, deleteCategoryById, getAllCategories, getCategoriesCount, getCategoryById, getCategoryWithProductCount, getProductsByCategoryId, updateCategoryById } from "../controllers/category.controller.js"
+import { createCategory, deleteCategoryById, getAllCategories, getCategoriesCount, getCategoryById, getCategoryWithProductCount, updateCategoryById } from "../controllers/category.controller.js"
 
 const router = express.Router()
 
 router.get("/", getAllCategories)
 router.get("/with-product-count", getCategoryWithProductCount)
 router.get("/count", getCategoriesCount)
-router.get("/:id/products", getProductsByCategoryId)
 router.get("/:id", getCategoryById)
 router.post("/", createCategory)
 router.patch("/:id", updateCategoryById)

@@ -35,7 +35,8 @@ export const createProduct = async (req: Request, res: Response) => {
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
     const [products] = await db.query(
-      "SELECT * FROM products"
+      `SELECT * FROM products
+       WHERE is_active = TRUE`
     )
     return res.status(200).json(products)
   } 
@@ -116,7 +117,11 @@ export const deleteProductById = async (req: Request, res: Response) => {
     const id = req.params.id as string
     
     const [product] = await db.query(
-      "DELETE FROM products WHERE product_id = ?", [id]
+      `UPDATE products
+       SET is_active = FALSE 
+       WHERE product_id = ?
+      `, 
+      [id]
     )
 
     return res.status(200).json(product)
@@ -141,6 +146,7 @@ export const getProductsWithCategory = async (req: Request, res: Response) => {
        FROM products p
        JOIN categories c
         USING (category_id)
+       WHERE is_active = TRUE
       `
     )
     return res.status(200).json(product)
@@ -156,7 +162,9 @@ export const getProductsCount = async (req: Request, res: Response) => {
     const [products] = await db.query<RowDataPacket[]>(
       `SELECT 
         COUNT(product_id) AS product_count
-      FROM products`
+       FROM products
+       WHERE is_active = TRUE
+      `
     )  
     return res.status(200).json(products[0])
   } 
@@ -179,6 +187,24 @@ export const getLowStockProducts = async (req: Request, res: Response) => {
     )
     return res.status(200).json(products)  
   }
+  catch (error) {
+    console.log(error)
+    return res.status(500).json({ message: "Database error" })
+  }
+}
+
+export const getProductsByCategoryId = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id as string
+    
+    const [products] = await db.query(
+      `SELECT * FROM products 
+       WHERE category_id = ? AND is_active = TRUE
+      `, 
+      [id]
+    )
+    return res.status(200).json(products)
+  } 
   catch (error) {
     console.log(error)
     return res.status(500).json({ message: "Database error" })

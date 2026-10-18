@@ -7,7 +7,7 @@ export type CategoriesCount = {
 
 export const useGetCategoriesCount = () => {
   return useQuery<CategoriesCount>({
-    queryKey: ["categories-count"],
+    queryKey: ["categories", "count"],
     queryFn: getCategoriesCount,
   });
 };

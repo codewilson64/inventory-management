@@ -92,30 +92,6 @@ export const deleteCategoryById = async (req: Request, res: Response) => {
   }
 }
 
-export const getProductsByCategoryId = async (req: Request, res: Response) => {
-  try {
-    const id = req.params.id as string
-
-    const [products] = await db.query(
-      `SELECT
-        p.product_id,
-        p.name,
-        p.price
-      FROM products p
-      WHERE p.category_id = ?
-      `,
-      [id]
-    )
-    return res.status(200).json(products)
-  } 
-  catch (error) {
-    console.log(error)
-    return res.status(500).json({
-      message: "Database error"
-    })
-  }
-}
-
 export const getCategoryWithProductCount = async (req: Request, res: Response) => {
   try {
     const [categories] = await db.query(
@@ -125,7 +101,8 @@ export const getCategoryWithProductCount = async (req: Request, res: Response) =
         COUNT(p.category_id) AS product_count
       FROM categories c
       JOIN products p
-      USING (category_id)
+        USING (category_id)
+      WHERE is_active = TRUE
       GROUP BY 
         c.category_id,
 	      c.name`
