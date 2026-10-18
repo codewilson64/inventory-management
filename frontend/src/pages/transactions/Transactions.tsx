@@ -7,10 +7,12 @@ import { useNavigate } from "react-router-dom";
 import { useGetTransactionsWithProduct } from "../../hooks/transaction/useGetTransactionsWithProduct";
 import Sidebar from "../../components/Sidebar";
 import { formatTime } from "../../helper/formatTime";
+import { useGetTransactionsCount } from "../../hooks/transaction/useGetTransactionsCount";
 
 function Transactions() {
   const navigate = useNavigate()
   const { data: transactions = [], isLoading, isError } = useGetTransactionsWithProduct()
+  const { data: transactionsCount } = useGetTransactionsCount()
 
   if (isLoading) {
     return (
@@ -78,7 +80,7 @@ function Transactions() {
             <div className="rounded-xl border bg-white p-5">
               <p className="text-sm text-gray-500">Total Transactions</p>
               <p className="mt-2 text-2xl font-semibold text-gray-900">
-                125
+                {transactionsCount?.transaction_count}
               </p>
             </div>
 

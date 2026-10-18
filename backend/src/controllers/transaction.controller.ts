@@ -215,3 +215,18 @@ export const getRecentTransactions = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Database error" })
   }
 }
+
+export const getTransactionsCount = async (req: Request, res: Response) => {
+  try {
+   const [transactions] = await db.query<RowDataPacket[]>(
+    `SELECT
+      COUNT(transaction_id) AS transaction_count
+     FROM transactions
+    `)
+    return res.status(200).json(transactions[0])  
+  } 
+  catch (error) {
+    console.log(error)
+    return res.status(500).json({ message: "Database error" })
+  }
+}

@@ -9,6 +9,11 @@ export const createTransaction = async (data: TransactionInput) => {
   return response.data
 }
 
+export const getTransactionsCount = async () => {
+  const response = await api.get("/transactions/count")
+  return response.data
+}
+
 export const getTransactionsWithProduct = async () => {
   const response = await api.get<Transaction[]>("/transactions/with-product");
   return response.data;
