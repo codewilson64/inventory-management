@@ -8,11 +8,26 @@ import { useGetTransactionsWithProduct } from "../../hooks/transaction/useGetTra
 import Sidebar from "../../components/Sidebar";
 import { formatTime } from "../../helper/formatTime";
 import { useGetTransactionsCount } from "../../hooks/transaction/useGetTransactionsCount";
+import { useSearchTransactions } from "../../hooks/transaction/useSearchTransactions";
+import { useState } from "react";
+import type { Transaction } from "../../types/transaction";
 
 function Transactions() {
   const navigate = useNavigate()
+
+  const [searchTerm, setSearchTerm] = useState("")
+  const [searchInput, setSearchInput] = useState("")
+
   const { data: transactions = [], isLoading, isError } = useGetTransactionsWithProduct()
   const { data: transactionsCount } = useGetTransactionsCount()
+  const { data: searchResults = [] } = useSearchTransactions(searchTerm)
+
+  const displayedTransactions: Transaction[] = searchTerm ? searchResults : transactions
+
+  const handleSearch = (e: any) => {
+    e.preventDefault()
+    setSearchTerm(searchInput.trim())
+  }
 
   if (isLoading) {
     return (
@@ -54,15 +69,17 @@ function Transactions() {
           {/* Toolbar */}
           <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="relative w-full sm:w-80">
-              <Search
-                size={18}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-              />
-
               <input
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
                 type="text"
                 placeholder="Search transactions..."
-                className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-10 pr-4 text-sm outline-none focus:border-gray-500"
+                className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-4 pr-10 text-sm outline-none focus:border-gray-500"
+              />
+              <Search
+                onClick={handleSearch}
+                size={18}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer"
               />
             </div>
 
@@ -128,7 +145,7 @@ function Transactions() {
               </thead>
 
               <tbody className="divide-y">
-                {transactions.map((transaction) => (
+                {displayedTransactions.map((transaction) => (
                   <tr
                     key={transaction.transaction_id}
                     className="hover:bg-gray-50"

@@ -112,7 +112,7 @@ function Products() {
             {/* Filters */}
             <div className="flex flex-col gap-3 border-b p-4 md:flex-row">
               {/* Search */}
-              <div className="relative flex-1">
+              <div className="relative w-full sm:w-80">
                 <input
                   type="text"
                   value={searchInput}

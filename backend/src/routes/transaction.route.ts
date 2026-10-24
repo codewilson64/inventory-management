@@ -1,5 +1,5 @@
 import express from "express"
-import { createTransaction, deleteTransactionById, getAllTransactions, getRecentTransactions, getStockInCount, getStockOutCount, getTransactionById, getTransactionHistory, getTransactionsCount, getTransactionsWithProduct, updateTransactionById } from "../controllers/transaction.controller.js"
+import { createTransaction, deleteTransactionById, getAllTransactions, getRecentTransactions, getStockInCount, getStockOutCount, getTransactionById, getTransactionHistory, getTransactionsCount, getTransactionsWithProduct, searchTransactions, updateTransactionById } from "../controllers/transaction.controller.js"
 
 const router = express.Router()
 
@@ -10,6 +10,7 @@ router.get("/count", getTransactionsCount)
 router.get("/stock-in-count", getStockInCount)
 router.get("/stock-out-count", getStockOutCount)
 router.get("/recent", getRecentTransactions)
+router.get("/search", searchTransactions)
 router.get("/:id", getTransactionById)
 router.post("/", createTransaction)
 router.patch("/:id", updateTransactionById)

@@ -33,3 +33,10 @@ export const getRecentTransactions = async () => {
   const response = await api.get<Transaction[]>("/transactions/recent")
   return response.data;
 }
+
+export const searchTransactions = async (name: string) => {
+  const response = await api.get("/transactions/search", {
+    params: { name }
+  })
+  return response.data
+}

@@ -230,3 +230,24 @@ export const getTransactionsCount = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Database error" })
   }
 }
+
+export const searchTransactions = async (req: Request, res: Response) => {
+  try {
+    const name = req.query.name as string
+
+    const [transactions] = await db.query(
+      `SELECT * 
+       FROM transactions t
+       JOIN products p
+         USING (product_id)
+       WHERE p.name LIKE ?
+      `,
+      [`%${name}%`]
+    )
+    return res.status(200).json(transactions)
+  } 
+  catch (error) {
+    console.log(error)
+    return res.status(500).json({ message: "Database error" })
+  }
+}
