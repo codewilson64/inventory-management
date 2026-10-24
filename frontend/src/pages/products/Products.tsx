@@ -15,19 +15,28 @@ import { useGetAllCategories } from "../../hooks/category/useGetAllCategories";
 import { useGetProductsByCategoryId } from "../../hooks/product/useGetProductsByCategoryId";
 import { useState } from "react";
 import type { Product } from "../../types/product";
+import { useSearchProducts } from "../../hooks/product/useSearchProducts";
 
 function Products() {
   const navigate = useNavigate()
 
   const [categoryId, setCategoryId] = useState("");
+  const [searchTerm, setSearchTerm] = useState("")
+  const [searchInput, setSearchInput] = useState("")
 
   const { data: products = [], isLoading, isError } = useGetProductsWithCategory()
   const { data: filteredProducts = [] } = useGetProductsByCategoryId(categoryId)
   const { data: categories = [] } = useGetAllCategories()
+  const { data: searchResults = [] } = useSearchProducts(searchTerm)
 
-  const displayedProducts: Product[] = categoryId ? filteredProducts : products
+  const displayedProducts: Product[] = searchTerm ? searchResults : categoryId ? filteredProducts : products
 
   const { mutateAsync, isPending } = useDeleteProductById()
+
+  const handleSearch = (e: any) => {
+    e.preventDefault();
+    setSearchTerm(searchInput.trim());
+  };
 
   const handleDelete = async (id: number) => {
     try {
@@ -104,15 +113,18 @@ function Products() {
             <div className="flex flex-col gap-3 border-b p-4 md:flex-row">
               {/* Search */}
               <div className="relative flex-1">
-                <Search
-                  size={18}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                />
-
                 <input
                   type="text"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
                   placeholder="Search products..."
-                  className="w-full rounded-lg border px-10 py-2.5 text-sm outline-none focus:border-gray-400"
+                  className="w-full rounded-lg border pl-4 pr-10 py-2.5 text-sm outline-none focus:border-gray-400"
+                />
+
+                <Search
+                  onClick={handleSearch}
+                  size={18}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400"
                 />
               </div>
 

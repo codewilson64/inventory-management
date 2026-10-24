@@ -210,3 +210,21 @@ export const getProductsByCategoryId = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Database error" })
   }
 }
+
+export const searchProducts = async (req: Request, res: Response) => {
+  try {
+    const name = req.query.name as string 
+
+    const [products] = await db.query(
+      `SELECT * FROM products
+       WHERE name LIKE ?
+      `,
+      [`%${name}%`]
+    )
+    return res.status(200).json(products)
+  } 
+  catch (error) {
+    console.log(error)
+    return res.status(500).json({ message: "Database error" })
+  }
+}

@@ -33,6 +33,13 @@ export const getProductsByCategoryId = async (id: string) => {
   return response.data
 }
 
+export const searchProducts = async (name: string) => {
+  const response = await api.get("/products/search", {
+    params: { name },
+  })
+  return response.data
+}
+
 export const getProductsWithCategory = async () => {
   const response = await api.get<Product[]>("/products/with-category");
   return response.data;
