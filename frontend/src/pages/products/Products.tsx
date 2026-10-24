@@ -31,7 +31,7 @@ function Products() {
 
   const displayedProducts: Product[] = searchTerm ? searchResults : categoryId ? filteredProducts : products
 
-  const { mutateAsync, isPending } = useDeleteProductById()
+  const { mutateAsync } = useDeleteProductById()
 
   const handleSearch = (e: any) => {
     e.preventDefault();
