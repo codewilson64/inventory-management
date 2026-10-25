@@ -1,15 +1,26 @@
-import mysql from "mysql2/promise"
-import "dotenv/config"
+
+import mysql from "mysql2/promise";
+import "dotenv/config";
+
+const requiredEnv = (name: string): string => {
+  const value = process.env[name];
+
+  if (!value) {
+    throw new Error(`Missing required environment variable: ${name}`);
+  }
+
+  return value;
+};
 
 const db = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    port: process.env.DB_PORT,
-    ssl: {
-        rejectUnauthorized: true,
-    },
-})
+  host: requiredEnv("DB_HOST"),
+  user: requiredEnv("DB_USER"),
+  password: requiredEnv("DB_PASSWORD"),
+  database: requiredEnv("DB_NAME"),
+  port: Number(requiredEnv("DB_PORT")),
+  ssl: {
+    rejectUnauthorized: true,
+  },
+});
 
-export default db
+export default db;
